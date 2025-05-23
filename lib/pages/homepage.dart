@@ -305,6 +305,11 @@ class _HomepageState extends State<Homepage> {
                 Navigator.pushReplacementNamed(context, '/login');
               },
             ),
+            ListTile(
+              leading: Icon(Icons.logout),
+              title: Text('Test Update v1.0.1+2'),
+              onTap: () async {},
+            ),
           ],
         ),
       ),
