@@ -1,5 +1,5 @@
 name: global_contineo_unofficial
-description: "A new Flutter project to access Contineo student platform of Global Academy Of Technology."
+description: "A new Flutter project to access Contineo Student platform of Global Academy of Technology."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -42,6 +42,7 @@ dependencies:
   open_file: ^3.3.2
   path_provider: ^2.1.2
   package_info_plus: ^8.3.0
+  permission_handler: ^11.0.1
 
 
 dev_dependencies:

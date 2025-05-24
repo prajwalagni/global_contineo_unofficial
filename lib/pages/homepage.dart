@@ -20,6 +20,7 @@ class _HomepageState extends State<Homepage> {
   String? usn;
   String? dob;
   String? studentName;
+  final ValueNotifier<bool> isLoadingNotifier1 = ValueNotifier(false);
 
   List<Map<String, dynamic>> subjects = [];
 
@@ -28,13 +29,13 @@ class _HomepageState extends State<Homepage> {
       'title': 'Attendance',
       'icon': Icon(Icons.checklist, size: 40, color: Colors.green),
       'route': '/attendance',
-      'arguments': {'subjects': [], 'webview_ctrl': null, 'isLoading': false},
+      'arguments': {'subjects': [], 'webview_ctrl': null, 'isLoading': false, 'isLoadingNotifier': null},
     },
     {
       'title': 'CIE Details',
       'icon': Icon(Icons.assignment, size: 40, color: Colors.orange),
       'route': '/cie',
-      'arguments': {'subjects': [], 'webview_ctrl': null, 'isLoading': false},
+      'arguments': {'subjects': [], 'webview_ctrl': null, 'isLoading': false, 'isLoadingNotifier': null},
       'isLoading': false,
     },
   ];
@@ -108,6 +109,7 @@ class _HomepageState extends State<Homepage> {
                     onTap: () {
                       gridMenus[index]['arguments']['subjects'] = subjects;
                       gridMenus[index]['arguments']['isLoading'] = isLoading;
+                      gridMenus[index]['arguments']['isLoadingNotifier1'] = isLoadingNotifier1;
                       gridMenus[index]['arguments']['webview_ctrl'] =
                           webViewController;
                       Navigator.pushNamed(
@@ -158,6 +160,7 @@ class _HomepageState extends State<Homepage> {
                   webViewController = controller;
                   setState(() {
                     isLoading = true;
+                    isLoadingNotifier1.value = true;
                   });
                 },
                 onLoadStop: (controller, url) async {
@@ -225,7 +228,7 @@ class _HomepageState extends State<Homepage> {
                                     let attLink = attendanceLinks[index] || '';
                                     let cie = cieFinal[index] || 0;
                                     let cieLink = cieLinks[index] || '';
-                                    subjects.push(\`\${subjectCode};\${subjectName};\${att};\${cie};\${attLink};\${cieLink}\`);
+                                    subjects.push(`\${subjectCode};\${subjectName};\${att};\${cie};\${attLink};\${cieLink}`);
                                   });
                               
                                   subjects;
@@ -246,6 +249,7 @@ class _HomepageState extends State<Homepage> {
                       }
                       setState(() {
                         isLoading = false;
+                        isLoadingNotifier1.value = false;
                         prefs?.setString('subjects', jsonEncode(subjects));
                       });
                     }
@@ -277,6 +281,7 @@ class _HomepageState extends State<Homepage> {
                 onReceivedError: (controller, request, errorResponse) {
                   setState(() {
                     isLoading = false;
+                    isLoadingNotifier1.value = false;
                   });
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
@@ -304,11 +309,6 @@ class _HomepageState extends State<Homepage> {
                 await prefs.clear();
                 Navigator.pushReplacementNamed(context, '/login');
               },
-            ),
-            ListTile(
-              leading: Icon(Icons.logout),
-              title: Text('Test Update v1.0.1+2'),
-              onTap: () async {},
             ),
           ],
         ),

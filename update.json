@@ -1,6 +1,8 @@
 {
   "version": "1.0.0",
   "url": "https://github.com/prajwalagni/global_contineo_unofficial/releases/download/v1.0.1/app-release.apk",
-  "changelog": "• Bug fixes\n• Improved UI\n• No New features added",
-  "force_update": false
+  "changelog2": "• Bug fixes\n• Improved UI\n• New features added",
+  "changelog": "• Bug fixes\n• Improved UI",
+  "force_update": false,
+  "beta": true
 }

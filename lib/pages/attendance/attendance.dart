@@ -20,6 +20,8 @@ class _AttendanceHomePageState extends State<AttendanceHomePage> {
   Map<String, List> attendanceAll = {};
   int lastRefreshedDiff = 60;
   DateTime? lastUpdated;
+  ValueNotifier<bool> isLoadingNotifier1 = ValueNotifier(false);
+  ValueNotifier<bool> isLoadingNotifier2 = ValueNotifier(false);
 
   // List subjects = [
   //   {'name': 'Mathematics', 'subject_code': 'BMATS24201', 'attendance': 71},
@@ -67,6 +69,7 @@ class _AttendanceHomePageState extends State<AttendanceHomePage> {
         setState(() {
           loadingSub = index;
         });
+        isLoadingNotifier2.value = false;
 
         final attendanceLink = subject['attendance_link'];
         await webViewController.loadUrl(
@@ -118,16 +121,8 @@ class _AttendanceHomePageState extends State<AttendanceHomePage> {
           """,
           );
 
-          if (result != null) {
-            setState(() {
-              prefs.setString(
-                'lastRefreshedAttendance',
-                DateTime.now().toIso8601String(),
-              );
-            });
-          }
-
           attendanceAll['${subject['subject_code']}'] = result;
+          // attendanceAll['finalIndex'] = [index + 1];
         } else if (attendanceAll['${subject['subject_code']}'] == null) {
           attendanceAll['${subject['subject_code']}'] = [];
         }
@@ -144,9 +139,14 @@ class _AttendanceHomePageState extends State<AttendanceHomePage> {
       );
     }
 
-    // await
-
     setState(() {
+      if (loadingSub == subjects.length - 1) {
+        prefs.setString(
+          'lastRefreshedAttendance',
+          DateTime.now().toIso8601String(),
+        );
+        lastUpdated = DateTime.parse(DateTime.now().toIso8601String());
+      }
       loadingSub = null;
       isLoading = false;
       prefs.setString('attendance_all', jsonEncode(attendanceAll));
@@ -164,6 +164,7 @@ class _AttendanceHomePageState extends State<AttendanceHomePage> {
     subjects = args['subjects'];
     isLoadingInit = args['isLoading'];
     webViewController = args['webview_ctrl'];
+    isLoadingNotifier1 = args['isLoadingNotifier1'];
 
     // print(attendanceAll.length);
     // print(lastRefreshedDiff);
@@ -174,6 +175,7 @@ class _AttendanceHomePageState extends State<AttendanceHomePage> {
         lastRefreshedDiff >= 60) {
       setState(() {
         isLoading = true;
+        isLoadingNotifier2.value = false;
       });
       _fetchAllAttendance();
     }
@@ -181,29 +183,30 @@ class _AttendanceHomePageState extends State<AttendanceHomePage> {
     return Scaffold(
       appBar: AppBar(
         // toolbarHeight: isLoading ? 70.0 : 55.0,
-        title: Column(
-          spacing: 2,
-          children: [
-            Text('Attendance'),
-            if (isLoadingInit || isLoading)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                spacing: 10,
-                children: [
-                  Text('Updating', style: TextStyle(fontSize: 15)),
-                  // SizedBox(width: 10),
-                  SizedBox(
-                    height: 20,
-                    width: 20,
-                    child: CircularProgressIndicator(
-                      color: Colors.red,
-                      strokeWidth: 3.0,
-                    ),
-                  ),
-                ],
-              ),
-          ],
-        ),
+        // title: Column(
+        //   spacing: 2,
+        //   children: [
+        //     Text('Attendance'),
+        //     if (isLoadingInit || isLoading)
+        //       Row(
+        //         mainAxisAlignment: MainAxisAlignment.center,
+        //         spacing: 10,
+        //         children: [
+        //           Text('Updating', style: TextStyle(fontSize: 15)),
+        //           // SizedBox(width: 10),
+        //           SizedBox(
+        //             height: 20,
+        //             width: 20,
+        //             child: CircularProgressIndicator(
+        //               color: Colors.red,
+        //               strokeWidth: 3.0,
+        //             ),
+        //           ),
+        //         ],
+        //       ),
+        //   ],
+        // ),
+        title: Text('Attendance'),
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.primary,
         actions: [
@@ -216,100 +219,125 @@ class _AttendanceHomePageState extends State<AttendanceHomePage> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Text('Last updated: ${lastUpdated?.toString().split('.')[0]}'),
-            ListView.builder(
-              shrinkWrap: true,
-              itemCount: subjects.length,
-              controller: ScrollController(),
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        subjects[index]['subject_code'], // This acts as the "super title"
-                        style: TextStyle(fontSize: 12, color: Colors.grey),
-                      ),
-                      Text(
-                        subjects[index]['subject_name'], // This acts as the "sub title"
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ],
-                  ),
-                  contentPadding: EdgeInsets.symmetric(horizontal: 15),
-                  trailing: RichText(
-                    textAlign: TextAlign.center,
-                    text: TextSpan(
-                      children: [
-                        if (isLoadingInit || (isLoading && loadingSub == index))
-                          WidgetSpan(
-                            child: Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: SizedBox(
-                                height: 25,
-                                width: 25,
-                                child: CircularProgressIndicator(
-                                  color: Colors.red,
-                                  strokeWidth: 3.0,
+      body: ValueListenableBuilder<bool>(
+        valueListenable: isLoadingNotifier1,
+        builder: (context, value, child) {
+          if (!isLoadingNotifier1.value &&
+              !isLoading &&
+              attendanceAll.isEmpty &&
+              lastRefreshedDiff >= 60) {
+            isLoading = true;
+            isLoadingNotifier2.value = false;
+            _fetchAllAttendance();
+          }
+          return value
+              ? Center(child: CircularProgressIndicator())
+              : SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Text(
+                      'Last updated: ${lastUpdated?.toString().split('.')[0]}',
+                    ),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: subjects.length,
+                      controller: ScrollController(),
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          title: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                subjects[index]['subject_code'], // This acts as the "super title"
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey,
                                 ),
                               ),
+                              Text(
+                                subjects[index]['subject_name'], // This acts as the "sub title"
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ),
+                          contentPadding: EdgeInsets.symmetric(horizontal: 15),
+                          trailing: RichText(
+                            textAlign: TextAlign.center,
+                            text: TextSpan(
+                              children: [
+                                if (isLoading && loadingSub == index)
+                                  WidgetSpan(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(5.0),
+                                      child: SizedBox(
+                                        height: 25,
+                                        width: 25,
+                                        child: CircularProgressIndicator(
+                                          color: Colors.red,
+                                          strokeWidth: 3.0,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                WidgetSpan(
+                                  child: Text(
+                                    '${subjects[index]['attendance']}%',
+                                    style: TextStyle(
+                                      color:
+                                          subjects[index]['attendance'] < 85
+                                              ? Colors.red
+                                              : Colors.green,
+                                      // fontWeight: FontWeight.bold,
+                                    ),
+                                    textScaler: TextScaler.linear(1.3),
+                                  ),
+                                ),
+                                WidgetSpan(child: SizedBox(width: 5)),
+                                WidgetSpan(
+                                  child: Icon(Icons.arrow_forward, size: 20),
+                                ),
+                              ],
                             ),
                           ),
-                        WidgetSpan(
-                          child: Text(
-                            '${subjects[index]['attendance']}%',
-                            style: TextStyle(
-                              color:
-                                  subjects[index]['attendance'] < 85
-                                      ? Colors.red
-                                      : Colors.green,
-                              // fontWeight: FontWeight.bold,
-                            ),
-                            textScaler: TextScaler.linear(1.3),
-                          ),
-                        ),
-                        WidgetSpan(child: SizedBox(width: 5)),
-                        WidgetSpan(child: Icon(Icons.arrow_forward, size: 20)),
-                      ],
-                    ),
-                  ),
-                  onTap: () {
-                    Navigator.pushNamed(
-                      context,
-                      '/attendance/details',
-                      arguments: {
-                        'subject_code': subjects[index]['subject_code'],
-                        'subject_name': subjects[index]['subject_name'],
-                        'attendance': subjects[index]['attendance'],
-                        'attendance_history':
-                            attendanceAll['${subjects[index]['subject_code']}'],
-                        'isLoading': (isLoading && loadingSub == index),
+                          onTap: () {
+                            isLoadingNotifier2.value =
+                                (loadingSub == index) ? true : false;
+                            Navigator.pushNamed(
+                              context,
+                              '/attendance/details',
+                              arguments: {
+                                'subject_code': subjects[index]['subject_code'],
+                                'subject_name': subjects[index]['subject_name'],
+                                'attendance': subjects[index]['attendance'],
+                                'attendance_history':
+                                    attendanceAll['${subjects[index]['subject_code']}'],
+                                'isLoading': (isLoading && loadingSub == index),
+                                'isLoadingNotifier2': isLoadingNotifier2,
+                              },
+                            );
+                          },
+                          // trailing: Text(
+                          //   '${subjects[index]['attendance']}%',
+                          //   style: TextStyle(
+                          //     color:
+                          //         subjects[index]['attendance'] < 85
+                          //             ? Colors.red
+                          //             : Colors.green,
+                          //     // fontWeight: FontWeight.bold,
+                          //   ),
+                          //   textScaler: TextScaler.linear(1.3),
+                          // ),
+                        );
                       },
-                    );
-                  },
-                  // trailing: Text(
-                  //   '${subjects[index]['attendance']}%',
-                  //   style: TextStyle(
-                  //     color:
-                  //         subjects[index]['attendance'] < 85
-                  //             ? Colors.red
-                  //             : Colors.green,
-                  //     // fontWeight: FontWeight.bold,
-                  //   ),
-                  //   textScaler: TextScaler.linear(1.3),
-                  // ),
-                );
-              },
-            ),
-          ],
-        ),
+                    ),
+                  ],
+                ),
+              );
+        },
       ),
     );
   }

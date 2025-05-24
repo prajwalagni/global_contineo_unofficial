@@ -10,12 +10,14 @@ class AttendanceDetails extends StatefulWidget {
 class _AttendanceDetailsState extends State<AttendanceDetails> {
   bool isLoadingInit = false;
   List attendanceHistory = [];
+  ValueNotifier<bool> isLoadingNotifier2 = ValueNotifier(false);
   @override
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
     isLoadingInit = args['isLoading'];
     attendanceHistory = args['attendance_history'] ?? [];
+    isLoadingNotifier2 = args['isLoadingNotifier2'];
     print(args['attendance_history']);
     return Scaffold(
       appBar: AppBar(
@@ -23,8 +25,11 @@ class _AttendanceDetailsState extends State<AttendanceDetails> {
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
-      body:
-          (isLoadingInit || attendanceHistory == [])
+      body: ValueListenableBuilder<bool>(
+        valueListenable: isLoadingNotifier2,
+        builder: (context, value, child) {
+          print(value);
+          return (value || attendanceHistory == [])
               ? Center(child: CircularProgressIndicator())
               : SingleChildScrollView(
                 child: Center(
@@ -198,7 +203,9 @@ class _AttendanceDetailsState extends State<AttendanceDetails> {
                     ],
                   ),
                 ),
-              ),
+              );
+        },
+      ),
     );
   }
 }

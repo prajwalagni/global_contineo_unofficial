@@ -1,10 +1,12 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:open_file/open_file.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class UpdateChecker {
   static const String updateUrl =
@@ -44,39 +46,45 @@ class UpdateChecker {
     showDialog(
       context: context,
       barrierDismissible: !forceUpdate, // Prevent dismissal for force updates
-      builder: (context) => AlertDialog(
-        title: const Text("Update Available"),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text("A new version is available!"),
-            const SizedBox(height: 8),
-            Text("What's new:\n$changelog"),
-          ],
-        ),
-        actions: [
-          if (!forceUpdate)
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text("Later"),
+      builder:
+          (context) => AlertDialog(
+            title: const Text("Update Available"),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text("A new version is available!"),
+                const SizedBox(height: 8),
+                Text("What's new:\n$changelog"),
+              ],
             ),
-          ElevatedButton(
-            onPressed: () async {
-              Navigator.of(context).pop(); // Close the dialog
-              _downloadAndInstallApk(context, downloadUrl);
-            },
-            child: const Text("Update Now"),
+            actions: [
+              if (!forceUpdate)
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text("Later"),
+                ),
+              ElevatedButton(
+                onPressed: () async {
+                  await _downloadAndInstallApk(context, downloadUrl);
+                  // Navigator.of(context).pop(); // Close the dialog
+                },
+                child: const Text("Update Now"),
+              ),
+            ],
           ),
-        ],
-      ),
     );
   }
 
   static Future<void> _downloadAndInstallApk(
-      BuildContext context, String url) async {
+    BuildContext context,
+    String url,
+  ) async {
     final dio = Dio();
     final tempDir = await getExternalStorageDirectory();
     final filePath = '${tempDir!.path}/app-release.apk';
+
+    final progressNotifier = ValueNotifier<double>(0.0);
+    _showDownloadProgressDialog(context, progressNotifier);
 
     try {
       await dio.download(
@@ -84,39 +92,60 @@ class UpdateChecker {
         filePath,
         onReceiveProgress: (received, total) {
           if (total != -1) {
-            double progress = received / total;
-            _showDownloadProgress(context, progress);
+            progressNotifier.value = received / total;
           }
         },
       );
 
-      // Open the downloaded APK file
-      await OpenFile.open(filePath);
+      Navigator.of(context, rootNavigator: true).pop(); // Close dialog
+
+      await _installApk(filePath);
     } catch (e) {
       print("Download failed: $e");
+      Navigator.of(context, rootNavigator: true).pop(); // Close dialog
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Download failed. Please try again."),
-        ),
+        const SnackBar(content: Text("Download failed. Please try again.")),
       );
     }
   }
 
-  static void _showDownloadProgress(BuildContext context, double progress) {
+  static void _showDownloadProgressDialog(
+    BuildContext context,
+    ValueNotifier<double> progressNotifier,
+  ) {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) => AlertDialog(
-        title: const Text("Downloading Update"),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            LinearProgressIndicator(value: progress),
-            const SizedBox(height: 8),
-            Text("${(progress * 100).toStringAsFixed(1)}%"),
-          ],
-        ),
-      ),
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: const Text("Downloading Update"),
+          content: ValueListenableBuilder<double>(
+            valueListenable: progressNotifier,
+            builder: (context, value, child) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  LinearProgressIndicator(value: value),
+                  const SizedBox(height: 8),
+                  Text("${(value * 100).toStringAsFixed(1)}%"),
+                ],
+              );
+            },
+          ),
+        );
+      },
     );
+  }
+
+  static Future<void> _installApk(String filePath) async {
+    if (Platform.isAndroid) {
+      if (await Permission.requestInstallPackages.request().isGranted) {
+        await OpenFile.open(
+          filePath,
+        ); // Or use install_plugin/apk_installer if preferred
+      } else {
+        openAppSettings(); // Or show rationale
+      }
+    }
   }
 }
