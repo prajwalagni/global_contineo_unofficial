@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:global_contineo_unofficial/theme_provider.dart';
+import 'package:provider/provider.dart';
 
 class AttendanceDetails extends StatefulWidget {
   const AttendanceDetails({super.key});
@@ -8,28 +10,34 @@ class AttendanceDetails extends StatefulWidget {
 }
 
 class _AttendanceDetailsState extends State<AttendanceDetails> {
-  bool isLoadingInit = false;
+  // bool isLoadingInit = false;
   List attendanceHistory = [];
-  ValueNotifier<bool> isLoadingNotifier2 = ValueNotifier(false);
+  ValueNotifier<Map<String, dynamic>> valNotifier2 = ValueNotifier({});
   @override
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
-    isLoadingInit = args['isLoading'];
-    attendanceHistory = args['attendance_history'] ?? [];
-    isLoadingNotifier2 = args['isLoadingNotifier2'];
-    print(args['attendance_history']);
+    // isLoadingInit = args['isLoading'];
+    // attendanceHistory = args['attendance_history'] ?? [];
+    valNotifier2 = args['valNotifier2'];
+    attendanceHistory = valNotifier2.value['attendance_history'] ?? [];
+    // print(args['attendance_history']);
+
+    final themeProvider = Provider.of<ThemeProvider>(
+      context,
+    );
+    
     return Scaffold(
       appBar: AppBar(
         title: Text('Attendance Details'),
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
-      body: ValueListenableBuilder<bool>(
-        valueListenable: isLoadingNotifier2,
+      body: ValueListenableBuilder<Map<String, dynamic>>(
+        valueListenable: valNotifier2,
         builder: (context, value, child) {
-          print(value);
-          return (value || attendanceHistory == [])
+          // print(value);
+          return (value['isLoading'] && attendanceHistory == [])
               ? Center(child: CircularProgressIndicator())
               : SingleChildScrollView(
                 child: Center(
@@ -67,7 +75,7 @@ class _AttendanceDetailsState extends State<AttendanceDetails> {
                           style: TextStyle(
                             fontSize: 16,
                             color:
-                                args['attendance'] < 85
+                                args['attendance'] < themeProvider.minAttendance
                                     ? Colors.red
                                     : Colors.green,
                           ),
@@ -117,6 +125,7 @@ class _AttendanceDetailsState extends State<AttendanceDetails> {
                         child: DataTable(
                           border: TableBorder.all(width: 0.3),
                           headingRowHeight: 40,
+                          columnSpacing: 50,
                           columns: [
                             DataColumn(
                               label: Text(

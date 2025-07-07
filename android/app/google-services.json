@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "361600548976",
+    "project_id": "global-contineo-unofficial",
+    "storage_bucket": "global-contineo-unofficial.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:361600548976:android:4bf3323d5c3aaedd9ff4b5",
+        "android_client_info": {
+          "package_name": "com.example.global_contineo_unofficial"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5MSFGLARsgGVRvNoSgKwPZYwqr2Prxao"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:361600548976:android:03a688938484a6999ff4b5",
+        "android_client_info": {
+          "package_name": "in.contineo.global_unofficial"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5MSFGLARsgGVRvNoSgKwPZYwqr2Prxao"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
