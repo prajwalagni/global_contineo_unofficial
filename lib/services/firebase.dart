@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
@@ -15,6 +16,7 @@ class FirebaseService {
     required Map<String, List> attendance,
     required Map<String, dynamic> deviceInfo,
   }) async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
     try {
       await firestore
           .collection('students')
@@ -29,6 +31,7 @@ class FirebaseService {
             'attendance': attendance,
             'cie': cie,
             'deviceInfo': deviceInfo,
+            'appVer': packageInfo,
             'lastUpdated': FieldValue.serverTimestamp(),
           }, SetOptions(merge: true));
 
