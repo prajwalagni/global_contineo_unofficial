@@ -88,6 +88,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    _v2_0_0_reset();
     _checkLoginStatus();
   }
 
@@ -96,6 +97,14 @@ class _MyAppState extends State<MyApp> {
     setState(() {
       _isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
     });
+  }
+
+  Future<void> _v2_0_0_reset() async {
+    prefs = await SharedPreferences.getInstance();
+    if (!(prefs.containsKey('v2.0.0reset'))) {
+      await prefs.clear();
+      prefs.setBool('v2.0.0reset', true);
+    }
   }
 
   @override
