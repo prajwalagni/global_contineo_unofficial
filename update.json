@@ -1,8 +1,7 @@
 {
-  "version": "1.0.0",
-  "url": "https://github.com/prajwalagni/global_contineo_unofficial/releases/download/v1.0.1/app-release.apk",
-  "changelog2": "• Bug fixes\n• Improved UI\n• New features added",
-  "changelog": "• Bug fixes\n• Improved UI",
+  "version": "2.0.0",
+  "url": "https://github.com/prajwalagni/global_contineo_unofficial/releases/download/v2.0.0/app-release.apk",
+  "changelog": "feat: Add Settings Page with Theme and Attendance Settings\n\n- Implemented a new SettingsPage allowing users to select app themes (System Default, Light, Dark) and adjust minimum attendance percentage via a slider.\n- Integrated navigation to About and Feedback pages.\n\nfeat: Introduce Firebase Service for Student Data Management\n\n- Added FirebaseService class to handle saving student data to Firestore, including student details and attendance records.\n\nfeat: Add ContineoServices for User Login\n\n- Created ContineoServices class with a placeholder for user login functionality.\n\nfeat: Enhance Update Checker with Beta Update Support\n\n- Updated UpdateChecker to handle beta and stable update channels based on user preferences.\n- Improved user experience with dynamic update dialogs and permission handling for APK installation.",
   "force_update": false,
   "beta": true
 }
