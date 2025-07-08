@@ -31,7 +31,9 @@ class FirebaseService {
             'attendance': attendance,
             'cie': cie,
             'deviceInfo': deviceInfo,
-            'appVer': packageInfo,
+            'appVer': packageInfo.version,
+            'appInstallTime': packageInfo.installTime,
+            'appUpdateTime': packageInfo.updateTime,
             'lastUpdated': FieldValue.serverTimestamp(),
           }, SetOptions(merge: true));
 

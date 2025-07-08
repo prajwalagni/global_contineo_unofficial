@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:global_contineo_unofficial/theme_provider.dart';
-import 'package:global_contineo_unofficial/pages/about_page.dart'; // Import the AboutPage
-import 'package:global_contineo_unofficial/pages/feedback_page.dart'; // Import the FeedbackPage
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});

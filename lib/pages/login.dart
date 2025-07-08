@@ -2,7 +2,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:gap/gap.dart'; // Assuming you are using gap package for spacing
 
 bool isLoading = false;
 
@@ -24,6 +23,20 @@ class _LoginPageState extends State<LoginPage> {
   late String dd, mm, yyyy;
 
   bool _termsAgreed = false;
+  
+  @override
+  void initState() {
+    super.initState();
+    _v2_0_0_reset();
+  }
+
+  Future<void> _v2_0_0_reset() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (!(prefs.containsKey('v2.0.0reset'))) {
+      await prefs.clear();
+      prefs.setBool('v2.0.0reset', true);
+    }
+  }
 
   // Date Picker Function
   Future<void> _selectDate(BuildContext context) async {
