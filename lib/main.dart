@@ -28,7 +28,7 @@ void main() async {
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, child) {
           return MaterialApp(
-            title: 'GAT Contineo',
+            title: 'GAT Contineo (Unofficial)',
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
               colorScheme: ColorScheme.fromSeed(

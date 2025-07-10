@@ -82,7 +82,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('GAT Contineo'),
+        title: const Text('GAT Contineo (Unofficial)'),
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.primary,
         // actions: [
