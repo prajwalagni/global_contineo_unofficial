@@ -62,6 +62,18 @@ class _HomepageState extends State<Homepage> {
       },
       'isLoading': false,
     },
+    {
+      'title': 'E-Results',
+      'icon': Icon(Icons.school, size: 40, color: Colors.red),
+      'route': '/eresults',
+      'arguments': {
+        'subjects': [],
+        'webview_ctrl': null,
+        'isLoading': false,
+        'valNotifier': null,
+      },
+      'isLoading': false,
+    },
   ];
 
   @override
@@ -336,8 +348,8 @@ class _HomepageState extends State<Homepage> {
                   initialUrlRequest: URLRequest(
                     url: WebUri(
                       sem.isOdd
-                          ? "https://globalparents.contineo.in/newparentsodd/index.php?option=com_studentdashboard&controller=studentdashboard&task=dashboard"
-                          : "https://globalparents.contineo.in/newparents/index.php?option=com_studentdashboard&controller=studentdashboard&task=dashboard",
+                          ? "https://globalparents.contineo.in/newparents/index.php?option=com_studentdashboard&controller=studentdashboard&task=dashboard"
+                          : "https://globalparents.contineo.in/newparentseven/index.php?option=com_studentdashboard&controller=studentdashboard&task=dashboard",
                       // "https://globalparents.contineo.in/newparents/index.php",
                       // "https://globalparents.contineo.in/newparents/index.php?option=com_studentdashboard&controller=studentdashboard&task=dashboard",
                     ),

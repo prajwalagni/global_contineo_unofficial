@@ -126,8 +126,8 @@ class _AttendanceHomePageState extends State<AttendanceHomePage> {
         urlRequest: URLRequest(
           url: WebUri(
             sem.isOdd
-                ? "https://globalparents.contineo.in/newparentsodd/index.php?option=com_studentdashboard&controller=studentdashboard&task=dashboard"
-                : "https://globalparents.contineo.in/newparents/index.php?option=com_studentdashboard&controller=studentdashboard&task=dashboard",
+                ? "https://globalparents.contineo.in/newparents/index.php?option=com_studentdashboard&controller=studentdashboard&task=dashboard"
+                : "https://globalparents.contineo.in/newparentseven/index.php?option=com_studentdashboard&controller=studentdashboard&task=dashboard",
             // "https://globalparents.contineo.in/newparents/index.php",
             // "https://globalparents.contineo.in/newparents/index.php?option=com_studentdashboard&controller=studentdashboard&task=dashboard",
           ),

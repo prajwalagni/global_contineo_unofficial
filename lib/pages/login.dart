@@ -274,15 +274,15 @@ class _LoginPageState extends State<LoginPage> {
                                 urlRequest: URLRequest(
                                   url: WebUri(
                                     selectedSem.isOdd
-                                        ? "https://globalparents.contineo.in/newparentsodd/index.php"
-                                        : "https://globalparents.contineo.in/newparents/index.php",
+                                        ? "https://globalparents.contineo.in/newparents/index.php"
+                                        : "https://globalparents.contineo.in/newparentseven/index.php",
                                   ),
                                 ),
                               );
                               if (url.toString() ==
                                       (selectedSem.isOdd
-                                          ? "https://globalparents.contineo.in/newparentsodd/index.php"
-                                          : "https://globalparents.contineo.in/newparents/index.php") &&
+                                          ? "https://globalparents.contineo.in/newparents/index.php"
+                                          : "https://globalparents.contineo.in/newparentseven/index.php") &&
                                   isLoading) {
                                 while (true) {
                                   final progress =
@@ -308,8 +308,8 @@ class _LoginPageState extends State<LoginPage> {
                               }
                             } else if (url.toString() ==
                                     (selectedSem.isOdd
-                                        ? "https://globalparents.contineo.in/newparentsodd/index.php"
-                                        : "https://globalparents.contineo.in/newparents/index.php") &&
+                                        ? "https://globalparents.contineo.in/newparents/index.php"
+                                        : "https://globalparents.contineo.in/newparentseven/index.php") &&
                                 isLoading) {
                               while (true) {
                                 final progress =
@@ -344,8 +344,8 @@ class _LoginPageState extends State<LoginPage> {
                       initialUrlRequest: URLRequest(
                         url: WebUri(
                           selectedSem.isOdd
-                              ? "https://globalparents.contineo.in/newparentsodd/index.php"
-                              : "https://globalparents.contineo.in/newparents/index.php",
+                              ? "https://globalparents.contineo.in/newparents/index.php"
+                              : "https://globalparents.contineo.in/newparentseven/index.php",
                           // "https://globalparents.contineo.in/newparents/index.php",
                           // "https://globalparents.contineo.in/newparents/index.php?option=com_studentdashboard&controller=studentdashboard&task=dashboard",
                         ),
@@ -388,8 +388,8 @@ class _LoginPageState extends State<LoginPage> {
                                             urlRequest: URLRequest(
                                               url: WebUri(
                                                 selectedSem.isOdd
-                                                    ? "https://globalparents.contineo.in/newparentsodd/index.php"
-                                                    : "https://globalparents.contineo.in/newparents/index.php",
+                                                    ? "https://globalparents.contineo.in/newparents/index.php"
+                                                    : "https://globalparents.contineo.in/newparentseven/index.php",
                                               ),
                                             ),
                                           );
@@ -465,8 +465,8 @@ class _LoginPageState extends State<LoginPage> {
                           );
                         } else if (url.toString() ==
                                 (selectedSem.isOdd
-                                    ? "https://globalparents.contineo.in/newparentsodd/index.php"
-                                    : "https://globalparents.contineo.in/newparents/index.php") &&
+                                    ? "https://globalparents.contineo.in/newparents/index.php"
+                                    : "https://globalparents.contineo.in/newparentseven/index.php") &&
                             isLoading) {
                           setState(() {
                             isLoading = false;

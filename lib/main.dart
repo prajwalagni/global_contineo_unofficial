@@ -1,5 +1,6 @@
 // main.dart
 import 'package:flutter/material.dart';
+import 'package:global_contineo_unofficial/pages/eresults_page.dart';
 import 'package:global_contineo_unofficial/pages/settings.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -66,6 +67,7 @@ void main() async {
               '/feedback':
                   (context) =>
                       const FeedbackPage(), // Add the new feedback route
+              '/eresults': (context) => const EResultsPage(),
             },
           );
         },

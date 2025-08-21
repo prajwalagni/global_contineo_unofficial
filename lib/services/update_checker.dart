@@ -2,10 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:open_filex/open_filex.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:open_file/open_file.dart';
+// import 'package:open_file/open_file.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart'; // Import SharedPreferences
 import 'package:android_intent_plus/android_intent.dart';
@@ -254,7 +255,7 @@ class UpdateChecker {
                               }
                               final filePath =
                                   '${tempDir.path}/app-release.apk';
-                              await OpenFile.open(filePath);
+                              await OpenFilex.open(filePath);
                             }
                             : null,
                     child: const Text("Install"),
@@ -315,7 +316,7 @@ class UpdateChecker {
                     }
                   } else {
                     // Handle other platforms or simply open the file if it's not Android
-                    await OpenFile.open(filePath);
+                    await OpenFilex.open(filePath);
                   }
                 },
                 child: const Text("Open Settings"),
