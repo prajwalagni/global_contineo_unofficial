@@ -1,18 +1,18 @@
 {
   "version": "2.1.0",
   "url": "https://github.com/prajwalagni/global_contineo_unofficial/releases/download/v2.1.0/app-release.apk",
-  "changelog": "feat: Update app title to 'GAT Contineo (Unofficial)', add wakelock_plus dependency, and increment version to 2.0.2, and minor bug fixed related to update.",
+  "changelog": "- Introduced E-Results page with functionality to download semester results.\n- Updated navigation in main.dart to include the new E-Results route.\n- Refactored URLs in attendance.dart, cie.dart, homepage.dart, and login.dart to point to the correct endpoints.\n- Incremented app version to 2.1.0 and updated changelog in update.json.",
   "force_update": true,
   "stable": {
     "version": "2.1.0",
     "url": "https://github.com/prajwalagni/global_contineo_unofficial/releases/download/v2.1.0/app-release.apk",
-    "changelog": "\n**IMPORTANT NOTE:**\n\nTHESE VERSION OF THE APP (v2.0.0/v2.0.1) CONTAINS A MINOR ISSUE WHICH PREVENTS UPDATING THE APP TO NEWER VERSIONS. KINDLY DOWNLOAD THE LATEST VERSION BY VISITING tinyurl.com/gat-contineo-apk-v2-0-2.\n\nfeat: Update app title to 'GAT Contineo (Unofficial)', add wakelock_plus dependency, and increment version to 2.0.2, and minor bug fixed related to update process.",
+    "changelog": "\n**IMPORTANT NOTE:**\n\nTHESE VERSION OF THE APP (v2.0.0/v2.0.1) CONTAINS A MINOR ISSUE WHICH PREVENTS UPDATING THE APP TO NEWER VERSIONS. KINDLY DOWNLOAD THE LATEST VERSION BY VISITING tinyurl.com/gat-contineo-app\n\n- Introduced E-Results page with functionality to download semester results.\n- Updated navigation in main.dart to include the new E-Results route.\n- Refactored URLs in attendance.dart, cie.dart, homepage.dart, and login.dart to point to the correct endpoints.\n- Incremented app version to 2.1.0 and updated changelog in update.json.",
     "force_update": false
   },
   "beta": {
     "version": "2.1.0",
     "url": "https://github.com/prajwalagni/global_contineo_unofficial/releases/download/v2.1.0/app-release.apk",
-    "changelog": "\n**IMPORTANT NOTE:**\n\nCURRENT VERSION OF THE APP (v2.0.0/v2.0.1) CONTAINS A MINOR ISSUE WHICH PREVENTS UPDATING THE APP TO NEWER VERSIONS. KINDLY DOWNLOAD THE LATEST VERSION BY VISITING tinyurl.com/gat-contineo-apk-v2-0-2.\n\nfeat: Update app title to 'GAT Contineo (Unofficial)', add wakelock_plus dependency, and increment version to 2.0.2, and minor bug fixed related to update process.",
+    "changelog": "\n**IMPORTANT NOTE:**\n\nCURRENT VERSION OF THE APP (v2.0.0/v2.0.1) CONTAINS A MINOR ISSUE WHICH PREVENTS UPDATING THE APP TO NEWER VERSIONS. KINDLY DOWNLOAD THE LATEST VERSION BY VISITING tinyurl.com/gat-contineo-app\n\n- Introduced E-Results page with functionality to download semester results.\n- Updated navigation in main.dart to include the new E-Results route.\n- Refactored URLs in attendance.dart, cie.dart, homepage.dart, and login.dart to point to the correct endpoints.\n- Incremented app version to 2.1.0 and updated changelog in update.json.",
     "force_update": false
   }
 }
