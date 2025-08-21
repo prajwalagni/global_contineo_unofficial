@@ -259,7 +259,7 @@ class _EResultsPageState extends State<EResultsPage>
               trailing: const Icon(Icons.share),
               onTap: () {
                 Share.share(
-                  "🚀 Hey! Download our unofficial GAT Results app to check your marks easily.\n👉 Visit https://github.com/myrepo to download.",
+                  "🚀 Hey! Download our unofficial GAT Results app to check your marks easily.\n👉 Visit tinyurl.com/gat-contineo-app to download.",
                 );
               },
             ),
